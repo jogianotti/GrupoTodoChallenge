@@ -15,6 +15,7 @@
         "symfony/framework-bundle": "4.4.*",
         "symfony/proxy-manager-bridge": "4.4.*",
         "symfony/security-bundle": "4.4.*",
+        "symfony/twig-bundle": "4.4.*",
         "symfony/web-server-bundle": "4.4",
         "symfony/yaml": "4.4.*"
     },
