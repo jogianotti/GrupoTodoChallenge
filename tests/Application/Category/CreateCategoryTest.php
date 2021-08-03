@@ -28,8 +28,9 @@ final class CreateCategoryTest extends TestCase
 
         $name = $category->getName();
         $parent = ($category->getParent()) ? $category->getParent()->getId() : null;
+        $description = $category->getDescription();
 
-        (new CategoryCreator($this->categoryRepository))($name, $parent);
+        (new CategoryCreator($this->categoryRepository))($name, $description, $parent);
     }
 
     protected function setUp(): void

@@ -14,6 +14,7 @@ final class CategoryMother
     {
         return Categoria::create(
             self::factory()->word,
+            self::factory()->text,
         );
     }
 

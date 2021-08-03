@@ -14,9 +14,9 @@ final class CategoryCreator
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function __invoke(string $name, ?int $parent_id): void
+    public function __invoke(string $name, ?string $description, ?int $parent_id): void
     {
-        $category = Categoria::create($name);
+        $category = Categoria::create($name, $description);
 
         $this->categoryRepository->save($category);
     }
