@@ -6,10 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/categoria")
+ */
 class CategoriaController extends AbstractController
 {
     /**
-     * @Route("/categoria", name="categoria")
+     * @Route("/", name="categoria")
      */
     public function index(): Response
     {

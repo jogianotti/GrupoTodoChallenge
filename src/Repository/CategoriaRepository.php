@@ -12,39 +12,18 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Categoria[]    findAll()
  * @method Categoria[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CategoriaRepository extends ServiceEntityRepository
+class CategoriaRepository extends ServiceEntityRepository implements CategoryRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Categoria::class);
     }
 
-    // /**
-    //  * @return Categoria[] Returns an array of Categoria objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function save(Categoria $category): void
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $entityManager = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?Categoria
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $entityManager->persist($category);
+        $entityManager->flush();
     }
-    */
 }
