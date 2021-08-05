@@ -2,6 +2,7 @@
 
 namespace App\Tests\Services\Category;
 
+use App\Entity\Categoria;
 use App\Repository\CategoriaRepository;
 use App\Tests\Application\Category\CategoryMother;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,6 +21,16 @@ final class MySQLCategoryRepositoryTest extends KernelTestCase
         $saved = $this->categoryRepository->find($category->getId());
 
         self::assertEquals($category, $saved);
+    }
+
+    public function testItShouldGetAllCategories()
+    {
+        $this->categoryRepository->save(CategoryMother::create());
+
+        $categories = $this->categoryRepository->all();
+
+        self::assertIsArray($categories);
+        self::assertInstanceOf(Categoria::class, $categories[0]);
     }
 
     protected function setUp(): void

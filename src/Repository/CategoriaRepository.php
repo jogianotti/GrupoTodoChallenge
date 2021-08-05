@@ -26,4 +26,9 @@ class CategoriaRepository extends ServiceEntityRepository implements CategoryRep
         $entityManager->persist($category);
         $entityManager->flush();
     }
+
+    public function all(): array
+    {
+        return $this->findAll();
+    }
 }
