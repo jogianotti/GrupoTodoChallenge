@@ -36,4 +36,11 @@ class CategoriaRepository extends ServiceEntityRepository implements CategoryRep
     {
         return $this->find($id);
     }
+
+    public function remove(Categoria $category): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($category);
+        $entityManager->flush();
+    }
 }

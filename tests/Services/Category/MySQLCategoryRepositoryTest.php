@@ -43,6 +43,23 @@ final class MySQLCategoryRepositoryTest extends KernelTestCase
         self::assertEquals($searchedCategory, $category);
     }
 
+    public function testItShouldRemoveACategory()
+    {
+        $category = CategoryMother::create();
+        $this->categoryRepository->save($category);
+        $id = $category->getId();
+
+        $saved = $this->categoryRepository->one($id);
+
+        self::assertEquals($category, $saved);
+
+        $this->categoryRepository->remove($category);
+
+        $deleted = $this->categoryRepository->one($id);
+
+        self::assertNull($deleted);
+    }
+
     protected function setUp(): void
     {
         self::bootKernel();
