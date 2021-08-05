@@ -32,9 +32,12 @@ class Categoria
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Categoria::class)
+     * @ORM\ManyToOne(targetEntity=Categoria::class, inversedBy="children")
      */
     private $parent;
+
+    /** @ORM\OneToMany(targetEntity=Categoria::class, mappedBy="parent", cascade={"remove"}) */
+    private $children;
 
     /**
      * @ORM\Column(type="datetime")
