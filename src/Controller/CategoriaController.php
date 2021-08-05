@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Application\Category\AllCategoriesFinder;
 use App\Application\Category\CategoryCreator;
 use App\Form\CategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,10 +18,12 @@ class CategoriaController extends AbstractController
     /**
      * @Route("/", name="categoria")
      */
-    public function index(): Response
+    public function index(AllCategoriesFinder $allCategoriesFinder): Response
     {
+        $categories = $allCategoriesFinder();
+
         return $this->render('categoria/index.html.twig', [
-            'controller_name' => 'CategoriaController',
+            'categories' => $categories,
         ]);
     }
 
