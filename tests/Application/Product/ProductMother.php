@@ -3,7 +3,6 @@
 namespace App\Tests\Application\Product;
 
 use App\Entity\Producto;
-use App\Tests\Application\Category\CategoryMother;
 use Faker\Factory;
 use Faker\Generator;
 
@@ -15,7 +14,7 @@ final class ProductMother
     {
         return Producto::create(
             self::factory()->word,
-            CategoryMother::create(),
+            self::factory()->text()
         );
     }
 

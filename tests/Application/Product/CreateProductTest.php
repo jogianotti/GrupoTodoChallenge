@@ -4,8 +4,11 @@ namespace App\Tests\Application\Product;
 
 use App\Application\Category\CategoryFinder;
 use App\Application\Product\ProductCreator;
+use App\Entity\ProductoCategoria;
 use App\Repository\CategoryRepositoryInterface;
+use App\Repository\ProductCategoryRepositoryInterface;
 use App\Repository\ProductRepositoryInterface;
+use App\Tests\Application\Category\CategoryMother;
 use Hamcrest\Matchers;
 use Mockery;
 use Mockery\MockInterface;
@@ -23,25 +26,42 @@ final class CreateProductTest extends TestCase
      */
     private $categoryRepository;
 
+    /**
+     * @var ProductCategoryRepositoryInterface|MockInterface
+     */
+    private $productCategoryRepository;
+
     /** @doesNotPerformAssertions */
     public function testItShouldCreateAProduct()
     {
         $product = ProductMother::create();
+        $category = CategoryMother::create();
+        $productCategory = ProductoCategoria::create($product, $category);
         $category_id = 1;
 
         $this->categoryRepository
             ->shouldReceive('one')
             ->with($category_id)
             ->once()
-            ->andReturn($product->getCategory());
+            ->andReturn($category);
 
         $this->productRepository
             ->shouldReceive('save')
             ->with(Matchers::equalTo($product))
             ->once();
 
-        (new ProductCreator($this->productRepository, new CategoryFinder($this->categoryRepository)))(
+        $this->productCategoryRepository
+            ->shouldReceive('save')
+            ->with(Matchers::equalTo($productCategory))
+            ->once();
+
+        (new ProductCreator(
+            $this->productRepository,
+            $this->productCategoryRepository,
+            new CategoryFinder($this->categoryRepository)
+        ))(
             $product->getName(),
+            $product->getDescription(),
             $category_id
         );
     }
@@ -50,6 +70,7 @@ final class CreateProductTest extends TestCase
     {
         $this->productRepository = Mockery::mock(ProductRepositoryInterface::class);
         $this->categoryRepository = Mockery::mock(CategoryRepositoryInterface::class);
+        $this->productCategoryRepository = Mockery::mock(ProductCategoryRepositoryInterface::class);
     }
 
     protected function tearDown(): void
