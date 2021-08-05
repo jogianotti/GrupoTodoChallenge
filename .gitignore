@@ -6,8 +6,6 @@
 /public/bundles/
 /var/
 /vendor/
-composer.lock
-symfony.lock
 ###< symfony/framework-bundle ###
 
 # These are some examples of commonly ignored file patterns.
