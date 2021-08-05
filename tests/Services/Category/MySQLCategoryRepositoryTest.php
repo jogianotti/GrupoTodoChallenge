@@ -23,7 +23,7 @@ final class MySQLCategoryRepositoryTest extends KernelTestCase
         self::assertEquals($category, $saved);
     }
 
-    public function testItShouldGetAllCategories()
+    public function testItShouldGetAllCategories(): void
     {
         $this->categoryRepository->save(CategoryMother::create());
 
@@ -31,6 +31,16 @@ final class MySQLCategoryRepositoryTest extends KernelTestCase
 
         self::assertIsArray($categories);
         self::assertInstanceOf(Categoria::class, $categories[0]);
+    }
+
+    public function testItShouldGetACategory(): void
+    {
+        $searchedCategory = CategoryMother::create();
+        $this->categoryRepository->save($searchedCategory);
+
+        $category = $this->categoryRepository->one($searchedCategory->getId());
+
+        self::assertEquals($searchedCategory, $category);
     }
 
     protected function setUp(): void

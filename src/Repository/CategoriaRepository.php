@@ -31,4 +31,9 @@ class CategoriaRepository extends ServiceEntityRepository implements CategoryRep
     {
         return $this->findAll();
     }
+
+    public function one(int $id): ?Categoria
+    {
+        return $this->find($id);
+    }
 }
