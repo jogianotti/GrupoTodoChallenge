@@ -46,16 +46,19 @@ class Categoria
      */
     private $updated_at;
 
-    public function __construct(string $name, ?string $description, ?Categoria $parent = null)
+    public function __construct()
     {
-        $this->setName($name);
-        $this->setDescription($description);
-        $this->setParent($parent);
     }
 
     public static function create(string $name, ?string $description, ?Categoria $parent = null): self
     {
-        return new self($name, $description, $parent);
+        $category = new self();
+
+        $category->setName($name);
+        $category->setDescription($description);
+        $category->setParent($parent);
+
+        return $category;
     }
 
     /**
