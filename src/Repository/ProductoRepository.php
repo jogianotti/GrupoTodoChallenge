@@ -36,4 +36,11 @@ class ProductoRepository extends ServiceEntityRepository implements ProductRepos
     {
         return $this->find($id);
     }
+
+    public function remove(Producto $product): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($product);
+        $entityManager->flush();
+    }
 }

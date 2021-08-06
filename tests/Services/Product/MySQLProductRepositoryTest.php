@@ -45,6 +45,23 @@ final class MySQLProductRepositoryTest extends KernelTestCase
         self::assertInstanceOf(Producto::class, $product);
     }
 
+    public function testItShouldRemoveACategory()
+    {
+        $product = ProductMother::create();
+        $this->productRepository->save($product);
+        $id = $product->getId();
+
+        $saved = $this->productRepository->one($id);
+
+        self::assertEquals($product, $saved);
+
+        $this->productRepository->remove($product);
+
+        $deleted = $this->productRepository->one($id);
+
+        self::assertNull($deleted);
+    }
+
     protected function setUp(): void
     {
         self::bootKernel();

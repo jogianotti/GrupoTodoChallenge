@@ -12,4 +12,6 @@ interface ProductRepositoryInterface
     public function all(): array;
 
     public function one(int $id): ?Producto;
+
+    public function remove(Producto $product): void;
 }
