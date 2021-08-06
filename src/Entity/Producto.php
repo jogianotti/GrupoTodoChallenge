@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\ProductoRepository;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProductoRepository::class)
  * @ORM\Table(name="productos")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Producto
 {
@@ -47,6 +49,16 @@ class Producto
         $product->setDescription($description);
 
         return $product;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPersist(): void
+    {
+        $datetime = new DateTime();
+        $this->setCreatedAt($datetime);
+        $this->setUpdatedAt($datetime);
     }
 
     public function getId(): ?int

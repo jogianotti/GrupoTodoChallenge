@@ -22,6 +22,8 @@ class ProductoRepository extends ServiceEntityRepository implements ProductRepos
 
     public function save(Producto $product)
     {
-        // TODO: Implement save() method.
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($product);
+        $entityManager->flush();
     }
 }
