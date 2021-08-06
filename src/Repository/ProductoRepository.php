@@ -20,10 +20,15 @@ class ProductoRepository extends ServiceEntityRepository implements ProductRepos
     }
 
 
-    public function save(Producto $product)
+    public function save(Producto $product): void
     {
         $entityManager = $this->getEntityManager();
         $entityManager->persist($product);
         $entityManager->flush();
+    }
+
+    public function all(): array
+    {
+        return $this->findAll();
     }
 }

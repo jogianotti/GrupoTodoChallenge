@@ -7,5 +7,7 @@ use App\Entity\Producto;
 
 interface ProductRepositoryInterface
 {
-    public function save(Producto $product);
+    public function save(Producto $product): void;
+
+    public function all(): array;
 }

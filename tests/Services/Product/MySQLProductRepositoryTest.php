@@ -2,6 +2,7 @@
 
 namespace App\Tests\Services\Product;
 
+use App\Entity\Producto;
 use App\Repository\ProductoRepository;
 use App\Tests\Application\Product\ProductMother;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,6 +22,16 @@ final class MySQLProductRepositoryTest extends KernelTestCase
         $saved = $this->productRepository->find($product->getId());
 
         self::assertEquals($product, $saved);
+    }
+
+    public function testItShouldGetAllProducts(): void
+    {
+        $this->productRepository->save(ProductMother::create());
+
+        $categories = $this->productRepository->all();
+
+        self::assertIsArray($categories);
+        self::assertInstanceOf(Producto::class, $categories[0]);
     }
 
     protected function setUp(): void
