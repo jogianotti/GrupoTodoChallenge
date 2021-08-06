@@ -28,10 +28,21 @@ final class MySQLProductRepositoryTest extends KernelTestCase
     {
         $this->productRepository->save(ProductMother::create());
 
-        $categories = $this->productRepository->all();
+        $products = $this->productRepository->all();
 
-        self::assertIsArray($categories);
-        self::assertInstanceOf(Producto::class, $categories[0]);
+        self::assertIsArray($products);
+        self::assertInstanceOf(Producto::class, $products[0]);
+    }
+
+    public function testItShouldGetAProduct(): void
+    {
+        $product = ProductMother::create();
+        $this->productRepository->save($product);
+
+        $product = $this->productRepository->one($product->getId());
+
+        self::assertNotNull($product);
+        self::assertInstanceOf(Producto::class, $product);
     }
 
     protected function setUp(): void

@@ -31,4 +31,9 @@ class ProductoRepository extends ServiceEntityRepository implements ProductRepos
     {
         return $this->findAll();
     }
+
+    public function one(int $id): ?Producto
+    {
+        return $this->find($id);
+    }
 }
