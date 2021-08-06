@@ -19,12 +19,12 @@ final class Version20210805235419 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->addSql('ALTER TABLE productos CHANGE id id BIGINT AUTO_INCREMENT NOT NULL');
         $this->addSql('ALTER TABLE producto_categorias CHANGE id id BIGINT AUTO_INCREMENT NOT NULL, CHANGE id_producto id_producto BIGINT NOT NULL, CHANGE id_categoria id_categoria BIGINT NOT NULL');
         $this->addSql('ALTER TABLE producto_categorias ADD CONSTRAINT FK_85D2DB0FF760EA80 FOREIGN KEY (id_producto) REFERENCES productos (id)');
         $this->addSql('ALTER TABLE producto_categorias ADD CONSTRAINT FK_85D2DB0FCE25AE0A FOREIGN KEY (id_categoria) REFERENCES categorias (id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_85D2DB0FF760EA80 ON producto_categorias (id_producto)');
         $this->addSql('CREATE INDEX IDX_85D2DB0FCE25AE0A ON producto_categorias (id_categoria)');
-        $this->addSql('ALTER TABLE productos CHANGE id id BIGINT AUTO_INCREMENT NOT NULL');
     }
 
     public function down(Schema $schema): void
