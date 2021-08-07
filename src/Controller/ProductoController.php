@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Application\Product\AllProductsFinder;
 use App\Application\Product\ProductCreator;
 use App\Application\Product\ProductFinder;
+use App\Application\Product\ProductRemover;
 use App\Application\Product\ProductUpdater;
 use App\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,5 +86,17 @@ class ProductoController extends AbstractController
             'product' => $product,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="producto_delete", methods={"POST"})
+     */
+    public function delete(Request $request, ProductRemover $productRemover, int $id): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $id, $request->request->get('_token'))) {
+            $productRemover($id);
+        }
+
+        return $this->redirectToRoute('producto', [], Response::HTTP_SEE_OTHER);
     }
 }

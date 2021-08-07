@@ -31,4 +31,11 @@ class ProductoCategoriaRepository extends ServiceEntityRepository implements Pro
     {
         return $this->findOneBy(['product' => $product]);
     }
+
+    public function remove(ProductoCategoria $productCategory): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($productCategory);
+        $entityManager->flush();
+    }
 }

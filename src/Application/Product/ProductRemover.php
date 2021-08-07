@@ -3,15 +3,21 @@
 namespace App\Application\Product;
 
 use App\Exceptions\Product\ProductNotFoundException;
+use App\Repository\ProductCategoryRepositoryInterface;
 use App\Repository\ProductRepositoryInterface;
 
 final class ProductRemover
 {
     private ProductRepositoryInterface $productRepository;
+    private ProductCategoryRepositoryInterface $productCategoryRepository;
 
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct(
+        ProductRepositoryInterface         $productRepository,
+        ProductCategoryRepositoryInterface $productCategoryRepository
+    )
     {
         $this->productRepository = $productRepository;
+        $this->productCategoryRepository = $productCategoryRepository;
     }
 
     public function __invoke(int $id): void
@@ -22,6 +28,9 @@ final class ProductRemover
             throw new ProductNotFoundException();
         }
 
+        $productCategory = $this->productCategoryRepository->oneByProduct($product);
+
+        $this->productCategoryRepository->remove($productCategory);
         $this->productRepository->remove($product);
 
     }

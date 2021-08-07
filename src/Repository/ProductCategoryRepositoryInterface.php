@@ -11,4 +11,6 @@ interface ProductCategoryRepositoryInterface
     public function save(ProductoCategoria $productCategory);
 
     public function oneByProduct(Producto $product): ProductoCategoria;
+
+    public function remove(ProductoCategoria $productCategory): void;
 }
