@@ -22,7 +22,7 @@ class ProductoCategoria
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Producto::class, inversedBy="productCategory", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Producto::class)
      * @ORM\JoinColumn(nullable=false, name="id_producto")
      */
     private $product;

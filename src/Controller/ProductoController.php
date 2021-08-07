@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Application\Product\AllProductsFinder;
 use App\Application\Product\ProductCreator;
+use App\Application\Product\ProductFinder;
+use App\Application\Product\ProductUpdater;
 use App\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,6 +51,38 @@ class ProductoController extends AbstractController
         }
 
         return $this->render('producto/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="producto_edit", methods={"GET","POST"})
+     */
+    public function edit(
+        Request        $request,
+        ProductFinder  $productFinder,
+        ProductUpdater $productUpdater,
+        int            $id
+    ): Response
+    {
+        $product = $productFinder($id);
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $product = $request->request->get('product');
+
+            $name = $product['name'];
+            $description = $product['description'] ?? null;
+            $category = $product['category'];
+
+            $productUpdater($id, $name, $description, $category);
+
+            return $this->redirectToRoute('producto', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('producto/edit.html.twig', [
+            'product' => $product,
             'form' => $form->createView(),
         ]);
     }
