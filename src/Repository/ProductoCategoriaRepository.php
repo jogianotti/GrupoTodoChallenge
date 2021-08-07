@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Producto;
 use App\Entity\ProductoCategoria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -12,39 +13,22 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method ProductoCategoria[]    findAll()
  * @method ProductoCategoria[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProductoCategoriaRepository extends ServiceEntityRepository
+class ProductoCategoriaRepository extends ServiceEntityRepository implements ProductCategoryRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ProductoCategoria::class);
     }
 
-    // /**
-    //  * @return ProductoCategoria[] Returns an array of ProductoCategoria objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function save(ProductoCategoria $productCategory)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($productCategory);
+        $entityManager->flush();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?ProductoCategoria
+    public function oneByProduct(Producto $product): ProductoCategoria
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->findOneBy(['product' => $product]);
     }
-    */
 }
