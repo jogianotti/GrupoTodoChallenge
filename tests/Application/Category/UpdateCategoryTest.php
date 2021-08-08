@@ -3,6 +3,7 @@
 namespace App\Tests\Application\Category;
 
 use App\Application\Category\CategoryUpdater;
+use App\Entity\Categoria;
 use App\Repository\CategoryRepositoryInterface;
 use Mockery;
 use Mockery\MockInterface;
@@ -21,6 +22,14 @@ final class UpdateCategoryTest extends TestCase
     {
         $id = 1;
         $category = CategoryMother::create();
+        $parent_id = 2;
+        $parent = new Categoria($parent_id);
+
+        $this->categoryRepository
+            ->shouldReceive('one')
+            ->with($parent_id)
+            ->once()
+            ->andReturn($parent);
 
         $this->categoryRepository
             ->shouldReceive('one')
@@ -37,7 +46,7 @@ final class UpdateCategoryTest extends TestCase
             $id,
             $category->getName(),
             $category->getDescription(),
-            $category->getParent()
+            $parent->getId()
         );
     }
 

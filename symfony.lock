@@ -1,4 +1,7 @@
 {
+    "bluem/tree": {
+        "version": "3.1"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {

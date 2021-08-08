@@ -49,8 +49,11 @@ class Categoria
      */
     private $updated_at;
 
-    public function __construct()
+    public function __construct(?int $id = null)
     {
+        if ($id) {
+            $this->id = $id;
+        }
     }
 
     public static function create(string $name, ?string $description, ?Categoria $parent = null): self

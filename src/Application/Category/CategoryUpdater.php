@@ -15,12 +15,15 @@ final class CategoryUpdater
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function __invoke(int $id, string $name, ?string $description, ?int $parent)
+    public function __invoke(int $id, string $name, ?string $description, ?int $parent_id)
     {
         $category = $this->findCategory($id);
 
         $category->setName($name);
         $category->setDescription($description);
+
+        $parent = $this->categoryRepository->one($parent_id);
+        $category->setParent($parent);
 
         $this->categoryRepository->save($category);
     }

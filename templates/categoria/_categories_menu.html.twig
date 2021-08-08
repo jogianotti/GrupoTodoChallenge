@@ -1,0 +1,11 @@
+<h4>Categorías</h4>
+<ul>
+    {% for category in categories_menu %}
+        <li>
+            {% if category.level > 0 %}
+                {% for i in 1..category.level %}&nbsp;&nbsp;{% endfor %}
+            {% endif %}
+            <a href="{{ path('index', {'id': category.id}) }}">{{ category.name }}</a>
+        </li>
+    {% endfor %}
+</ul>

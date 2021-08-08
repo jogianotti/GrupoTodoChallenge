@@ -17,23 +17,22 @@ final class GetMenuTest extends TestCase
 
     public function testItShouldGenerateTheCategoriesMenu()
     {
-        $ca = CategoryMother::create();
-        $cb = CategoryMother::create();
-        $cc = CategoryMother::create();
-        $cd = CategoryMother::create();
-
-        $cb->setParent($ca);
-        $cd->setParent($cc);
+        $result = [
+            ['id' => 1, 'parent' => 0, 'name' => 'one'],
+            ['id' => 2, 'parent' => 1, 'name' => 'two'],
+            ['id' => 3, 'parent' => 0, 'name' => 'three'],
+            ['id' => 4, 'parent' => 3, 'name' => 'four'],
+        ];
 
         $this->categoryRepository
             ->shouldReceive('allParents')
             ->once()
-            ->andReturn([$ca, $cc]);
+            ->andReturn($result);
 
         $menu = (new MenuMaker($this->categoryRepository))();
 
         self::assertIsArray($menu);
-        self::assertEquals($ca->getName(), $menu[0]['name']);
+        self::assertEquals('one', $menu[0]['name']);
     }
 
     protected function setUp(): void

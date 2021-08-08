@@ -3,6 +3,7 @@
 namespace App\Application\Category;
 
 use App\Repository\CategoryRepositoryInterface;
+use BlueM\Tree;
 
 final class MenuMaker
 {
@@ -13,22 +14,29 @@ final class MenuMaker
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function __invoke()
+    public function __invoke(): array
     {
-        $categories = $this->categoryRepository->allParents();
+        $data = $this->categoryRepository->allParents();
 
-        return $this->menu($categories);
+        $tree = new Tree($data);
+
+        return $this->menu($tree->getRootNodes(), 0);
     }
 
-    private function menu($categories): array
+    private function menu($categories, $level): array
     {
         $menu = array();
 
         foreach ($categories as $category) {
             $menu[] = [
                 'id' => $category->getId(),
-                'name' => $category->getName()
+                'name' => $category->getName(),
+                'level' => $level
             ];
+
+            if ($category->hasChildren()) {
+                $menu = array_merge($menu, $this->menu($category->getChildren(), ++$level));
+            }
         }
 
         return $menu;

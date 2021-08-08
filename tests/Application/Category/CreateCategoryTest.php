@@ -3,6 +3,7 @@
 namespace App\Tests\Application\Category;
 
 use App\Application\Category\CategoryCreator;
+use App\Entity\Categoria;
 use App\Repository\CategoryRepositoryInterface;
 use Hamcrest\Matchers;
 use Mockery;
@@ -20,6 +21,15 @@ final class CreateCategoryTest extends TestCase
     public function testItShouldCreateCategory()
     {
         $category = CategoryMother::create();
+        $parent_id = 1;
+        $parent = new Categoria($parent_id);
+        $category->setParent($parent);
+
+        $this->categoryRepository
+            ->shouldReceive('one')
+            ->with(1)
+            ->once()
+            ->andReturn($parent);
 
         $this->categoryRepository
             ->shouldReceive('save')
@@ -27,7 +37,7 @@ final class CreateCategoryTest extends TestCase
             ->once();
 
         $name = $category->getName();
-        $parent = ($category->getParent()) ? $category->getParent()->getId() : null;
+        $parent = $parent->getId();
         $description = $category->getDescription();
 
         (new CategoryCreator($this->categoryRepository))($name, $description, $parent);

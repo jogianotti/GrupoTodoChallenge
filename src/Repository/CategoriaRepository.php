@@ -46,6 +46,13 @@ class CategoriaRepository extends ServiceEntityRepository implements CategoryRep
 
     public function allParents(): array
     {
-        return $this->findBy(['parent' => null]);
+        $sql = "SELECT id, IFNULL(parent_id, 0) as parent, nombre as name FROM categorias";
+
+
+        return $this->getEntityManager()
+            ->getConnection()
+            ->prepare($sql)
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 }

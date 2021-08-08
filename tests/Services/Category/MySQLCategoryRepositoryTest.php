@@ -67,7 +67,11 @@ final class MySQLCategoryRepositoryTest extends KernelTestCase
 
         $categories = $this->categoryRepository->allParents();
 
-        self::assertContains($category, $categories);
+        self::assertContains([
+            'id' => (string)$category->getId(),
+            'parent' => "0",
+            'name' => $category->getName()
+        ], $categories);
     }
 
     protected function setUp(): void
