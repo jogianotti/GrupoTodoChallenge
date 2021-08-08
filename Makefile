@@ -37,3 +37,11 @@ tests:
 .PHONY: console
 console:
 	@docker-compose exec --user $$(id -u):$$(id -g) web php bin/console $(call args)
+
+.PHONY: composer/require
+composer/require:
+	@docker-compose exec --user $$(id -u):$$(id -g) web composer require --prefer-dist  $(call args)
+
+.PHONY: composer/require-dev
+composer/require-dev:
+	@docker-compose exec --user $$(id -u):$$(id -g) web composer require --dev --prefer-dist  $(call args)

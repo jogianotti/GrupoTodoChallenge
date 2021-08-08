@@ -17,6 +17,8 @@ services:
             - "30080:80"
         volumes:
             - .:/var/www/html/
+            - .composer:/.composer
+
         depends_on:
             - database
 
