@@ -67,3 +67,6 @@ Thumbs.db
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+!.composer/.gitkeep
+.composer/*

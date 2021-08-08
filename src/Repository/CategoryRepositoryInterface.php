@@ -14,4 +14,6 @@ interface CategoryRepositoryInterface
     public function one(int $id): ?Categoria;
 
     public function remove(Categoria $category): void;
+
+    public function allParents(): array;
 }

@@ -60,6 +60,16 @@ final class MySQLCategoryRepositoryTest extends KernelTestCase
         self::assertNull($deleted);
     }
 
+    public function testItShouldGetAllParentsCategories(): void
+    {
+        $category = CategoryMother::create();
+        $this->categoryRepository->save($category);
+
+        $categories = $this->categoryRepository->allParents();
+
+        self::assertContains($category, $categories);
+    }
+
     protected function setUp(): void
     {
         self::bootKernel();
