@@ -13,4 +13,6 @@ interface ProductCategoryRepositoryInterface
     public function oneByProduct(Producto $product): ProductoCategoria;
 
     public function remove(ProductoCategoria $productCategory): void;
+
+    public function byCategory(int $id): array;
 }

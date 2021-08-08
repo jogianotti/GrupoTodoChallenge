@@ -38,4 +38,16 @@ class ProductoCategoriaRepository extends ServiceEntityRepository implements Pro
         $entityManager->remove($productCategory);
         $entityManager->flush();
     }
+
+    public function byCategory(int $id): array
+    {
+        return $this->createQueryBuilder('pc')
+            ->select('p.name')
+            ->addSelect('p.description')
+            ->innerJoin('pc.product', 'p')
+            ->where('pc.category = :category')
+            ->setParameter('category', $id)
+            ->getQuery()
+            ->getResult();
+    }
 }

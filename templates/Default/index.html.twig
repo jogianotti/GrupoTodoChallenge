@@ -4,4 +4,15 @@
 
 {% block body %}
     {{ include('categoria/_categories_menu.html.twig') }}
+
+    <h4>Productos</h4>
+    <ul>
+        {% for product in products %}
+            <li>
+                Nombre: {{ product.name }}<br>
+                Descripción: {{ product.description }}
+            </li> <br>
+        {% endfor %}
+
+    </ul>
 {% endblock %}
