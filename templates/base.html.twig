@@ -14,7 +14,11 @@
         {% endblock %}
     </head>
     <body>
-        {{ include('menu.html.twig') }}
+        {% if is_granted('ROLE_USER') %}
+            {{ include('menu.html.twig') }}
+        {% else %}
+            <a href="{{ path('app_login') }}">INGRESO</a>
+        {% endif %}
         {% block body %}{% endblock %}
     </body>
 </html>

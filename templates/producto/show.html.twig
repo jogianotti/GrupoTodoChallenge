@@ -23,8 +23,9 @@
     </table>
 
     <a href="{{ path('index') }}">Volver al listado</a>
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('producto_edit', {'id': product.id}) }}">Editar</a>
 
-    <a href="{{ path('producto_edit', {'id': product.id}) }}">Editar</a>
-
-    {{ include('producto/_delete_form.html.twig') }}
+        {{ include('producto/_delete_form.html.twig') }}
+    {% endif %}
 {% endblock %}
