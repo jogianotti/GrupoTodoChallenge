@@ -4,10 +4,14 @@ namespace App\Tests\Application\Category;
 
 use App\Application\Category\CategoryUpdater;
 use App\Entity\Categoria;
+use App\Message\CategoryUpdatedMessage;
 use App\Repository\CategoryRepositoryInterface;
+use Hamcrest\Matchers;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 final class UpdateCategoryTest extends TestCase
 {
@@ -16,6 +20,10 @@ final class UpdateCategoryTest extends TestCase
      * @var CategoryRepositoryInterface|MockInterface
      */
     private $categoryRepository;
+    /**
+     * @var MockInterface|MessageBusInterface
+     */
+    private $bus;
 
     /** @doesNotPerformAssertions */
     public function testItShouldUpdateCategory(): void
@@ -42,7 +50,15 @@ final class UpdateCategoryTest extends TestCase
             ->with($category)
             ->once();
 
-        (new CategoryUpdater($this->categoryRepository))(
+        $message = new CategoryUpdatedMessage($id);
+
+        $this->bus
+            ->shouldReceive('dispatch')
+            ->with(Matchers::equalTo($message))
+            ->once()
+            ->andReturn(new Envelope($message));
+
+        (new CategoryUpdater($this->categoryRepository, $this->bus))(
             $id,
             $category->getName(),
             $category->getDescription(),
@@ -53,6 +69,7 @@ final class UpdateCategoryTest extends TestCase
     protected function setUp(): void
     {
         $this->categoryRepository = Mockery::mock(CategoryRepositoryInterface::class);
+        $this->bus = Mockery::mock(MessageBusInterface::class);
     }
 
     protected function tearDown(): void
