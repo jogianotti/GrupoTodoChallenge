@@ -10,6 +10,7 @@
         <tr>
             <th>Id</th>
             <th>Nombre</th>
+            <th>Ruta</th>
             <th>Descripción</th>
             <th>Acciones</th>
         </tr>
@@ -19,6 +20,7 @@
             <tr>
                 <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
+                <td>{{ category.path }}</td>
                 <td>{{ category.description }}</td>
                 <td>
                     <a href="{{ path('categoria_edit', {'id': category.id}) }}">editar</a>

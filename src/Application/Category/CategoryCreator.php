@@ -18,9 +18,11 @@ final class CategoryCreator
     {
         $category = Categoria::create($name, $description);
 
-        $parent = $this->categoryRepository->one($parent_id);
-        $category->setParent($parent);
-
+        if ($parent_id) {
+            $parent = $this->categoryRepository->one($parent_id);
+            $category->setParent($parent);
+        }
+        
         $this->categoryRepository->save($category);
     }
 }

@@ -49,6 +49,11 @@ class Categoria
      */
     private $updated_at;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $path;
+
     public function __construct(?int $id = null)
     {
         if ($id) {
@@ -82,18 +87,6 @@ class Categoria
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -112,6 +105,8 @@ class Categoria
     public function setParent(?self $parent): self
     {
         $this->parent = $parent;
+
+        $this->makePath();
 
         return $this;
     }
@@ -136,6 +131,41 @@ class Categoria
     public function setUpdatedAt(DateTimeInterface $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getPath(): ?string
+    {
+        return $this->path ?? $this->getName() . ' / ';
+    }
+
+    public function setPath(?string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        $this->makePath();
+
+        return $this;
+    }
+
+    public function makePath(): self
+    {
+        $parentPath = ($this->getParent()) ? $this->getParent()->getPath() : '';
+
+        $this->setPath($parentPath . $this->getName() . ' / ');
 
         return $this;
     }

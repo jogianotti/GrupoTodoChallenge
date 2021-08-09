@@ -16,4 +16,8 @@ interface CategoryRepositoryInterface
     public function remove(Categoria $category): void;
 
     public function allParents(): array;
+
+    public function allChildren(array $ids): array;
+
+    public function saveAll(array $categories): void;
 }

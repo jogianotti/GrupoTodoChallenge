@@ -10,9 +10,8 @@
         {% for product in products %}
             <li>
                 Nombre: {{ product.name }}<br>
-                Descripción: {{ product.description }}
+                <a href="{{ path('producto_show', {'id': product.id}) }}">VER</a>
             </li> <br>
         {% endfor %}
-
     </ul>
 {% endblock %}

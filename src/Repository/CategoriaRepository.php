@@ -55,4 +55,24 @@ class CategoriaRepository extends ServiceEntityRepository implements CategoryRep
             ->executeQuery()
             ->fetchAllAssociative();
     }
+
+    public function allChildren(array $ids): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.parent IN (:parents)')
+            ->setParameter('parents', $ids)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function saveAll(array $categories): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        foreach ($categories as $category) {
+            $entityManager->persist($category);
+        }
+
+        $entityManager->flush();
+    }
 }

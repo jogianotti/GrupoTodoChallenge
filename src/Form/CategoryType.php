@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Categoria;
+use App\Repository\CategoryRepositoryInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,7 +26,34 @@ class CategoryType extends AbstractType
                 'choice_label' => 'name',
                 'choice_value' => 'id',
                 'required' => false,
-                'label' => 'Categoría padre'
+                'label' => 'Categoría padre',
+                'query_builder' => function (CategoryRepositoryInterface $categoryRepository) use ($options) {
+                    $queryBuilder = $categoryRepository->createQueryBuilder('c');
+
+                    if (array_key_exists('data', $options)) {
+                        $id = [$options['data']->getId()];
+                        $categories = $categoryRepository->allChildren($id);
+                        $all[] = $id;
+
+                        while (!empty($categories)) {
+                            $childrenIds = array();
+
+                            foreach ($categories as $category) {
+                                $childrenIds[] = $category->getId();
+                                $all[] = $category->getId();
+                            }
+
+                            $categories = $categoryRepository->allChildren($childrenIds);
+                        }
+
+                        $queryBuilder->where('c.parent NOT IN (:children)')
+                            ->andWhere('c.id != :id')
+                            ->setParameter('children', $all)
+                            ->setParameter('id', $id);
+                    }
+
+                    $queryBuilder->orderBy('c.name', 'ASC');
+                },
             ]);
     }
 

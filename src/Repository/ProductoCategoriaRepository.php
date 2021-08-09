@@ -42,7 +42,8 @@ class ProductoCategoriaRepository extends ServiceEntityRepository implements Pro
     public function byCategory(int $id): array
     {
         return $this->createQueryBuilder('pc')
-            ->select('p.name')
+            ->select('p.id')
+            ->addSelect('p.name')
             ->addSelect('p.description')
             ->innerJoin('pc.product', 'p')
             ->where('pc.category = :category')

@@ -43,6 +43,21 @@ final class CreateCategoryTest extends TestCase
         (new CategoryCreator($this->categoryRepository))($name, $description, $parent);
     }
 
+    public function testItShouldSaveParentPath()
+    {
+        $secondParent = CategoryMother::create();
+        $firstParent = CategoryMother::create();
+        $category = CategoryMother::create();
+
+        $firstParent->setParent($secondParent);
+        $category->setParent($firstParent);
+
+        $path = $secondParent->getName() . ' / ' . $firstParent->getName() . ' / ' . $category->getName() . ' / ';
+
+        self::assertEquals($path, $category->getPath());
+
+    }
+
     protected function setUp(): void
     {
         $this->categoryRepository = Mockery::mock(CategoryRepositoryInterface::class);
